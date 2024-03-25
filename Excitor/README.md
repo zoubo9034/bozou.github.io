@@ -1,14 +1,16 @@
-# Nerfies
+# LLaMA-Excitor
 
-This is the repository that contains source code for the [Nerfies website](https://nerfies.github.io).
+This is the repository that contains source code for the [LLaMA-Excitor](https://zoubo9034.github.io/Excitor/).
 
-If you find Nerfies useful for your work please cite:
+If you find LLaMA-Excitor is useful for your work please cite:
 ```
-@article{park2021nerfies
-  author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
-  title     = {Nerfies: Deformable Neural Radiance Fields},
-  journal   = {ICCV},
-  year      = {2021},
+@inproceedings{
+anonymous2024llamaexcitor,
+title={{LL}a{MA}-Excitor: General Instruction Tuning via Indirect Feature Interaction},
+author={Anonymous},
+booktitle={Conference on Computer Vision and Pattern Recognition 2024},
+year={2024},
+url={https://openreview.net/forum?id=e7lM7tGXC9}
 }
 ```
 
