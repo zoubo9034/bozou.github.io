@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Efficient teeth localization, segmentation, and labeling in 2D images.">
+  <meta name="keywords" content="Teeth segmentation, intra-oral images, Orthodontic Treatment">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teeth-SEG: An Efficient Instance Segmentation Framework for Orthodontic Treatment based on Multi-Scale Aggregation and Anthropic Prior Knowledge</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <!-- <link rel="icon" href="./static/images/favicon.jpg"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://keunhong.com">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://.github.io">
+            SpaceCLIP
+          </a>
+          <a class="navbar-item" href="https://.github.io">
+            VideoDistill
+          </a>
+          <a class="navbar-item" href="https://.github.io">
+            LLaMA-Excitor
+          </a>
+          <a class="navbar-item" href="https://.github.io">
+            DFCP
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <!-- <img src="./static/images/favicon.jpg" alt="Publication Icon" class="publication-icon">   -->
+          <h1 class="title is-1 publication-title">Teeth-SEG: An Efficient Instance Segmentation Framework for Orthodontic Treatment based on Multi-Scale Aggregation and Anthropic Prior Knowledge</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              Bo Zou</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              Shaofeng Wang</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              Hao Liu</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              Gaoyue Sun</a><sup>5</sup>,
+            </span>
+            <span class="author-block">
+              Yajie Wang</a><sup>1,4</sup>,
+            </span>
+            <span class="author-block">
+              FeiFei Zuo</a><sup>4</sup>,
+            </span>
+            <span class="author-block">
+              Chengbin Quan</a><sup>1</sup>,
+            </span>
+            <span class="author-block">
+              Youjian Zhao</a><sup>1,3</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Tsinghua University, </span>
+            <span class="author-block"><sup>2</sup>Capital Medical Universty, </span>
+            <span class="author-block"><sup>3</sup>Zhongguancun Laboratory, </span>
+            <span class="author-block"><sup>4</sup>LargeV .Inc, </span>
+            <span class="author-block"><sup>5</sup>Imperial College London</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/xxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/xxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/xxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+
+              <!-- Data Link. -->
+              <span class="link-block">
+                <a href="https://github.com/google/xxx"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fa fa-database"></i>
+                  </span>
+                  <span>IO150K v0.9</span>
+                  </a>
+              </span>
+              
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Teeth localization, segmentation, and labeling in 2D images have great potential in modern dentistry to 
+            enhance dental diagnostics, treatment planning, and population-based studies on oral health. However, 
+            general instance segmentation frameworks are incompetent due to 
+            1) the subtle differences between some teeth' shapes (e.g., maxillary first premolar and second premolar), 
+            2) the teeth's position and shape variation across subjects, and 
+            3) the presence of abnormalities in the dentition (e.g., caries and edentulism).
+          </p>
+
+          <p>
+            To address these problems, we propose a ViT-based framework named TeethSEG, 
+            which consists of stacked Multi-Scale Aggregation (MSA) blocks and an Anthropic Prior Knowledge (APK) layer. 
+            Specifically, to compose the two modules, 
+            we design a unique permutation-based upscaler to ensure high efficiency 
+            while establishing clear segmentation boundaries with multi-head self/cross-gating layers 
+            to emphasize particular semantics meanwhile maintaining the divergence between token embeddings.
+          </p>
+          
+          <p>
+            Besides, we collect the first open-sourced intraoral image dataset IO150K, 
+            which comprises over 150k intraoral photos, 
+            and all photos are annotated by orthodontists using a human-machine hybrid algorithm.
+          </p>
+
+          <p>
+            Experiments on IO150K demonstrate that our TeethSEG outperforms 
+            the state-of-the-art segmentation models on dental image segmentation. 
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="column is-full-width has-text-centered">
+      <h2 class="title is-3">The largest 2D intra-oral scan dataset IO150k</h2>
+    </div>
+    <div class="column is-full-width has-text-justified"></div>
+      <p>
+        We create the first open-source 2D intraoral scan dataset IO150k, which consists of:  <br />
+        <br />
+        <b>(1) Challenge80K</b>, 80K rendered images generated from 1,800 3D scans sourced from 3D Teeth Scan Segmentation and Labeling Challenge 2023. <br />
+        <b>(2) Plaster70K</b>, 70K images of 940 oral plaster models made before, during, and after taking the orthodontic treatment. <br />
+        <b>(3) RGB0.8K</b>, 0.8K RGB standard intraoral photos taken before orthodontic treatment. <br />
+      </p>
+
+      <p>
+        <br />
+        This dataset has the following key properties: <br />
+        <br />
+        <b>(1) Large:</b> We have collected over 150K images that enable well-trained transformers that are usually more data-hungry than CNN models. <br />
+        <b>(2) Diverse:</b> We cover a wide range of dental malformations (e.g., crowded dentition and edentulism) to ensure the ability to generalize to clinical applications. <br />
+        <b>(3) Professional:</b> The data is annotated by multiple professional orthodontists using a human-machine hybrid algorithm, <br />
+        ensuring accurate tooth position recognition in complex instances. Please see Appendix A for dataset statistics.
+      </p>
+    
+      <div class="content has-text-justified">
+        <br />
+        <h3 class="title is-4">Illustration of human-machine hybrid annotation process</h3>
+        <img src="static/images/labeling.png" alt="Labeling method" class="blend-img-background center-image">
+      </div>
+      <div class="content has-text-justified">
+        <br />
+        <h3 class="title is-4">Data Samples</h3>
+        <img src="static/images/dataset.jpg" alt="Labeling method" class="blend-img-background center-image">
+      </div>
+      <div class="content has-text-justified">
+        <br />
+        <h3 class="title is-4">Data statistics</h3>
+        <img src="static/images/data statistics.png" alt="Labeling method" class="blend-img-background center-image">
+      </div>
+      <br />
+    </div>
+  </div>
+</section>
+
+<section class="section hero is-light">
+  <div class="container is-max-desktop">
+    <div class="column is-full-width has-text-centered">
+      <h3 class="title is-3">Pipeline of TeethSEG</h3>
+    </div>
+    <div class="column is-full-width">
+      <p>
+        We utilize a pretrained encoder to project an intraoral image into a sequence of visual tokens, 
+        and a set of trainable class tokens to predict segmentation masks. 
+        The multi-scale aggregation (MSA) blocks efficiently aggregate the visual information into class tokens, 
+        and the anthropic prior knowledge (APK) layer imposes human judgment into the mask prediction.
+      </p>
+      <br />
+      <div class="content has-text-justified">
+        <img src="static/images/pipeline.png" alt="Pipeline of TeethSEG" class="blend-img-background center-image">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="column is-full-width has-text-centered">
+      <h2 class="title is-3">Qualitative Results</h2>
+      <br />
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h3 class="title is-4">Comparsions on IO150k o.o.d. test</h3>
+        <div class="content has-text-justified">
+          <p>
+            Compared with previous segmentation methods, 
+            TeethSEG can deal better with complex situations such as missing teeth or irregular tooth arrangements. 
+          </p>
+          <img src="static/images/vs sotas.png" alt="Results on o.o.d. test" class="blend-img-background center-image">
+        </div>
+      </div>
+      <br />
+    </div>
+   
+    <h3 class="title is-4">performance under serious dental abnormals</h3>
+    <div class="columns is-centered">
+      <div class="column is-three-fifths"> 
+        <div class="content has-text-justified">
+          <img src="static/images/abnormal.png" alt="Results on dental abnormals" class="blend-img-background center-image">
+        </div>
+      </div>
+      <br />
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h3 class="title is-4">Comparsions on IO150k RGB test</h3>
+        <div class="content has-text-justified">
+          <p>
+            2D images can efficiently determine dental crowding, dentition space, missing teeth, narrow dental arch, and midline deviation. 
+            Considering the cost of 3D scans and CBCT, the large radiation CBCT dose to patients, and the fact that they are not routine examinations, 
+            we tend to study using 2D images for early orthodontic warning and 3D data for treatment planning. 
+            TeethSEG can fast adapt to 2D intra-oral images by finetuning on a small amount of annotated data.
+          </p>
+          <img src="static/images/rgb vs.png" alt="Results on RGB test" class="blend-img-background center-image">
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="section hero is-light">
+  <div class="column is-full-width has-text-centered">
+    <h2 class="title is-3">Quantitative Results</h2>  
+    <br />
+  </div>
+  <div class="container is-max-desktop">
+    <h3 class="title is-4">Comparsions on IO150k i.i.d. test</h3>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          <img src="static/images/table iid.png" alt="Results on i.i.d. test" class="blend-img-background center-image">
+        </div>
+      </div>
+    </div>
+    
+    <h3 class="title is-4">Comparsions on IO150k o.o.d. test</h3>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          <img src="static/images/table ood.png" alt="Results on o.o.d. test" class="blend-img-background center-image">
+        </div>
+      </div>
+    </div>
+
+    <h3 class="title is-4">Comparsions on IO150k RGB test</h3>
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <div class="content has-text-justified">
+          <img src="static/images/table rgb.png" alt="Results on RGB test" class="blend-img-background center-image">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{
+      anonymous2024teethseg,
+      title={Teeth-{SEG}: An Efficient Instance Segmentation Framework for Orthodontic Treatment based on Anthropic Prior Knowledge},
+      author={Anonymous},
+      booktitle={Conference on Computer Vision and Pattern Recognition 2024},
+      year={2024},
+      url={https://openreview.net/forum?id=P6tNXNycrT}
+      }</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="./static/videos/nerfies_paper.pdf">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/keunhong" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow the <a
+              href="https://github.com/nerfies/nerfies.github.io">source code</a> of this website,
+            we just ask that you link back to this page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
